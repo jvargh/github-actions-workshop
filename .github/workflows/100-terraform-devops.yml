@@ -1,4 +1,4 @@
-name: 'Create Infra with Terraform'
+name: '100-terraform-devops'
 
 on:
   push:
