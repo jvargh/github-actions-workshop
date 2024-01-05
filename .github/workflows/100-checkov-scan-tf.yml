@@ -1,4 +1,11 @@
-trigger: none
+name: 100-checkov-scan-tf
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  
 # - main
 pr: none
   # branches:
