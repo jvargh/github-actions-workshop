@@ -76,7 +76,7 @@ stages:
 
     - task: ManualValidation@0
       inputs:
-        notifyUsers: 'houssem.dellai@live.com'
+        notifyUsers: 'varghesejoji@microsoft.com'
         instructions: |
           you should validate the Terraform Plan file
           $(Build.BuildId)
