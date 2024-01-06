@@ -2,13 +2,12 @@ name: '100-terraform-devops'
 
 on:
   push:
-    branches: [ main ]
-    paths: .github/workflows/terraform-devops.yml
+    branches:
+    - main
   pull_request:
-    branches:  none # [ main ]
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-  
+    branches:  
+    - main
+    
 env:
   STORAGE_ACCOUNT_NAME: storagetfstate013
   RESOURCE_GROUP_NAME: rg-terraform-state
