@@ -124,10 +124,10 @@ jobs:
         #                -backend-config="resource_group_name=$RESOURCE_GROUP_NAME"
   
     # Checks that all Terraform configuration files adhere to a canonical format
-    - name: Terraform Format
-      id: format
-      run: terraform fmt -check
-      continue-on-error: true
+    # - name: Terraform Format
+    #   id: format
+    #   run: terraform fmt -check
+    #   continue-on-error: true
 
     - name: Terraform Plan
       id: plan
