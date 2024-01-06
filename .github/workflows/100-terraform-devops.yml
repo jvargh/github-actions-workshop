@@ -169,7 +169,7 @@ jobs:
           
     # T Apply       
     - name: Terraform Apply
-      if: github.ref == 'refs/heads/main' && github.event_name == 'pull_request' # 'push'
+      # if: github.ref == 'refs/heads/main' && github.event_name == 'pull_request' # 'push'
       env:
         ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
         ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
