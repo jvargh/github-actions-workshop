@@ -106,6 +106,7 @@ jobs:
       with:
         terraform_version: 1.1.7
     
+    # T Init
     - name: Terraform Init
       id: init
       env:
@@ -118,11 +119,13 @@ jobs:
         # loading any remote state, downloading modules, etc.
         terraform init      
 
+    # T Format
     - name: Terraform Format
       id: format
       run: terraform fmt -check
       continue-on-error: true
 
+    # T Plan
     - name: Terraform Plan
       id: plan
       env:
