@@ -2,12 +2,13 @@ name: '100-terraform-devops'
 
 on:
   push:
-    branches:
-    - main
+    branches: [ main ]
+    paths: .github/workflows/100-terraform-devops.yml
   pull_request:
-    # branches:  
-    # - main
-    
+    branches:  none # [ main ]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  
 env:
   STORAGE_ACCOUNT_NAME: storagetfstate013
   RESOURCE_GROUP_NAME: rg-terraform-state
@@ -135,7 +136,35 @@ jobs:
       if: github.event_name == 'pull_request' # 'pull_request' #         
       run: |
         terraform plan -no-color 
-    
+    - name: Add Terraform Plan Comment
+      id: comment
+      uses: actions/github-script@v6
+      if: github.event_name == 'pull_request' # 'push'
+      env:
+        PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const output = `#### Terraform Format and Style 🖌\`${{ steps.format.outcome }}\`
+          #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+          #### Terraform Validation 🤖${{ steps.validate.outputs.stdout }}
+          #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+      
+          <details><summary>Show Plan</summary>
+          
+          \`\`\`${process.env.PLAN}\`\`\`
+          
+          </details>
+          
+          *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
+            
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: output
+          })
+          
     # T Apply       
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
