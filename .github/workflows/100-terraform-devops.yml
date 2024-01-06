@@ -136,6 +136,8 @@ jobs:
       if: github.event_name == 'pull_request' # 'pull_request' #         
       run: |
         terraform plan -no-color 
+
+    # T Plan comment       
     - name: Add Terraform Plan Comment
       id: comment
       uses: actions/github-script@v6
@@ -151,11 +153,8 @@ jobs:
           #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
       
           <details><summary>Show Plan</summary>
-          
-          \`\`\`${process.env.PLAN}\`\`\`
-          
-          </details>
-          
+          \`\`\`${process.env.PLAN}\`\`\`          
+          </details>          
           *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
             
           github.rest.issues.createComment({
