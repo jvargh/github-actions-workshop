@@ -74,7 +74,7 @@ jobs:
           az version
 
           # Create resource group
-          az group create --name $RESOURCE_GROUP_NAME --location westeurope
+          az group create --name $RESOURCE_GROUP_NAME --location eastus
           
           # Create storage account
           az storage account create --name $STORAGE_ACCOUNT_NAME \
@@ -154,7 +154,7 @@ jobs:
     - name: Add Terraform Plan Comment
       id: comment
       uses: actions/github-script@v6
-      if: github.event_name == 'pull_request' # 'push'
+      if: github.event_name == 'push' # 'pull_request'
       env:
         PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
       with:
