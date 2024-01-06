@@ -125,8 +125,19 @@ jobs:
       run: terraform fmt -check
       continue-on-error: true
 
+    # T Apply       
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/main' && github.event_name == 'pull_request' # 'push'
+      env:
+        ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+        ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+        ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      run: |
+        terraform apply -auto-approve
+
     # T Plan
-    - name: Terraform Plan
+    - name: Terraform Plan Comment
       id: plan
       env:
         ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
@@ -167,13 +178,3 @@ jobs:
             body: output
           })
           
-    # T Apply       
-    - name: Terraform Apply
-      if: github.ref == 'refs/heads/main' && github.event_name == 'pull_request' # 'push'
-      env:
-        ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-        ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-        ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-        ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-      run: |
-        terraform apply -auto-approve
