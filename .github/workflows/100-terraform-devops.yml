@@ -125,6 +125,18 @@ jobs:
       run: terraform fmt -check
       continue-on-error: true
 
+    # T Plan
+    - name: Terraform Plan
+      id: plan
+      env:
+        ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+        ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+        ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}   
+      if: github.event_name == 'pull_request' # 'pull_request' #         
+      run: |
+        terraform plan -no-color 
+
     # T Apply       
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'pull_request' # 'push'
@@ -136,19 +148,7 @@ jobs:
       run: |
         terraform apply -auto-approve
 
-    # T Plan
-    - name: Terraform Plan Comment
-      id: plan
-      env:
-        ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-        ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-        ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-        ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}   
-      if: github.event_name == 'pull_request' # 'pull_request' #         
-      run: |
-        terraform plan -no-color 
-
-    # T Plan comment       
+    # Add Plan comment       
     - name: Add Terraform Plan Comment
       id: comment
       uses: actions/github-script@v6
