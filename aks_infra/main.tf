@@ -41,17 +41,17 @@ resource "azurerm_container_registry" "acr" {
 data "azurerm_client_config" "current" {
 }
 
-# data "azurerm_user_assigned_identity" "identity" {
-#   name                = "${azurerm_kubernetes_cluster.k8s.name}-agentpool"
-#   resource_group_name = azurerm_kubernetes_cluster.k8s.node_resource_group 
-# }
+data "azurerm_user_assigned_identity" "identity" {
+  name                = "${azurerm_kubernetes_cluster.k8s.name}-agentpool"
+  resource_group_name = azurerm_kubernetes_cluster.k8s.node_resource_group 
+}
 
-# resource "azurerm_role_assignment" "role_acrpull" {
-#   scope                            = azurerm_container_registry.acr.id
-#   role_definition_name             = "AcrPull"
-#   principal_id                     = data.azurerm_user_assigned_identity.identity.principal_id
-#   skip_service_principal_aad_check = true
-# }
+resource "azurerm_role_assignment" "role_acrpull" {
+  scope                            = azurerm_container_registry.acr.id
+  role_definition_name             = "AcrPull"
+  principal_id                     = data.azurerm_user_assigned_identity.identity.principal_id
+  skip_service_principal_aad_check = true
+}
 
 # resource "azurerm_sql_server" "sql" {
 #   name                         = var.sql_name
