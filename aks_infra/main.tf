@@ -53,7 +53,7 @@ resource "azurerm_role_assignment" "role_acrpull" {
   skip_service_principal_aad_check = true
 }
 
-resource "azurerm_sql_server" "sql" {
+resource "azurerm_mssql_server" "sql" {
   name                         = var.sql_name
   resource_group_name          = azurerm_resource_group.rg.name
   location                     = azurerm_resource_group.rg.location
