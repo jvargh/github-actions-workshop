@@ -3,23 +3,23 @@ variable "node_count" {
 }
 
 variable "dns_prefix" {
-  default = "aks-k8s-2022"
+  default = "aks-k8s-2024"
 }
 
 variable "cluster_name" {
-  default = "aks-k8s-2022"
+  default = "aks-k8s-2024"
 }
 
 variable "kubernetes_version" {
-  default = "1.21.2"
+  default = "1.27.7"
 }
 
 variable "acr_name" {
-  default = "acrforaks2022"
+  default = "acrforaks2024"
 }
 
 variable "sql_name" {
-  default = "mssql-2022"
+  default = "mssql-2024"
 }
 
 variable "db_name" {
@@ -27,7 +27,7 @@ variable "db_name" {
 }
 
 variable "db_admin_login" {
-  default = "houssem"
+  default = "sadmin"
 }
 
 variable "db_admin_password" {
@@ -35,13 +35,13 @@ variable "db_admin_password" {
 }
 
 variable "storage_name" {
-  default = "mssqlstorageaccount2022"
+  default = "mssqlstorageaccount2024"
 }
 
 variable "resource_group_name" {
-  default = "aks-k8s-2020"
+  default = "aks-k8s-2024"
 }
 
 variable "location" {
-  default = "westeurope"
+  default = "eastus"
 }
