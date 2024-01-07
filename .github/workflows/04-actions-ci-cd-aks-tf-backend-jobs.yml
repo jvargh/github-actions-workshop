@@ -35,8 +35,7 @@ env:
   DB_ADMIN_PASSWORD: "@Aa123456"
   STORAGE_NAME: storageforaks24
 
-
-  WORKING_DIRECTORY: 05_Web_Sql_database  
+  WORKING_DIRECTORY: aks_infra 
     
 jobs:
   create-terraform-backend:
