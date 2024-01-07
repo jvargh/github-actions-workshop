@@ -62,7 +62,7 @@ jobs:
       with:
         tokenPrefix: __
         tokenSuffix: __
-        files: infra/terraform.tfvars
+        files: aks_infra/terraform.tfvars
       env:
         AKS_RESOURCE_GROUP: ${{ env.AKS_RESOURCE_GROUP }}
         AKS_NAME: ${{ env.AKS_NAME }}
@@ -77,7 +77,7 @@ jobs:
       with:
         find: "azurerm"
         replace: "local"
-        include: "infra/backend.tf"
+        include: "aks_infra/backend.tf"
         regex: true
 
     # Install the latest version of Terraform CLI
