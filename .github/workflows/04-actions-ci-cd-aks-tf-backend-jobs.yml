@@ -48,10 +48,10 @@ jobs:
         shell: bash
         working-directory: ${{ env.WORKING_DIRECTORY }}
 
-    # steps:
-    # # Checkout the repository to the GitHub Actions runner
-    # - name: Checkout
-    #   uses: actions/checkout@v2
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v2
 
     # - name: Login to Azure with Service Principal
     #   uses: Azure/login@v1.4.3
