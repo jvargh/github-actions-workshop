@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\varghesejoji\\Desktop\\github-actions\\03-app-dotnet\\app-dotnet.csproj",
+      "projectUniqueName": "C:\\Users\\varghesejoji\\Desktop\\github-actions-workshop\\03-app-dotnet\\app-dotnet.csproj",
       "projectName": "app-dotnet",
-      "projectPath": "C:\\Users\\varghesejoji\\Desktop\\github-actions\\03-app-dotnet\\app-dotnet.csproj",
+      "projectPath": "C:\\Users\\varghesejoji\\Desktop\\github-actions-workshop\\03-app-dotnet\\app-dotnet.csproj",
       "packagesPath": "C:\\Users\\varghesejoji\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\varghesejoji\\Desktop\\github-actions\\03-app-dotnet\\obj\\",
+      "outputPath": "C:\\Users\\varghesejoji\\Desktop\\github-actions-workshop\\03-app-dotnet\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\varghesejoji\\AppData\\Roaming\\NuGet\\NuGet.Config",
