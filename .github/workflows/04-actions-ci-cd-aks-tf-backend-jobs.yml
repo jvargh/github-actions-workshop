@@ -153,7 +153,7 @@ jobs:
  
     - name: Build Docker Image
       run:
-        docker build ./aks_MvcApp/ --file ./aks_MvcApp/Dockerfile --tag $DOCKER_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
+        docker build ./aks_MvcApp/ --file ./aks_MvcApp/Dockerfile --tag ${{ env.DOCKER_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
 
     # - name: Scan Docker Image using Trivy and Dockle
     #   uses: Azure/container-scan@v0
@@ -174,12 +174,12 @@ jobs:
 
     - name: Login to ACR
       run: |
-        ACR_PASSWORD=$(az acr credential show -n $ACR_NAME -o tsv --query passwords[0].value)
-        docker login $DOCKER_REPOSITORY --username $ACR_NAME --password $ACR_PASSWORD
+        ACR_PASSWORD=$(az acr credential show -n ${{ env.ACR_NAME }} -o tsv --query passwords[0].value)
+        docker login ${{ env.DOCKER_REPOSITORY }} --username ${{ env.ACR_NAME }} --password $ACR_PASSWORD
         
     - name: Push Image to ACR
       run: |
-        docker push $DOCKER_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
+        docker push ${{ env.DOCKER_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
      
 
 
