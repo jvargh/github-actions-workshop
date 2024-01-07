@@ -77,8 +77,9 @@ jobs:
             --encryption-services blob
           
           # Retrieve the storage account key
-          ACCOUNT_KEY=$(az storage account keys list --resource-group $INFRA_RESOURCE_GROUP --account-name $TF_STATE_STORAGE_ACCOUNT_NAME --query [0].value -o tsv)
-          
+          ACCOUNT_KEY=$(az storage account keys list --resource-group $INFRA_RESOURCE_GROUP --account-name $TF_STATE_STORAGE_ACCOUNT_NAME --query [0].value -o tsv)         
+          TF_STATE_ACCESS_KEY=$ACCOUNT_KEY
+
           # Create a storage container (for the Terraform State)
           az storage container create --name $TF_STATE_CONTAINER_NAME --account-name $TF_STATE_STORAGE_ACCOUNT_NAME
 
@@ -142,6 +143,10 @@ jobs:
     
     - name: Terraform Init (Azure Backend)
       run: terraform init
+            -backend-config="storage_account_name=$TF_STATE_STORAGE_ACCOUNT_NAME"
+            -backend-config="container_name=$TF_STATE_CONTAINER_NAME"
+            -backend-config="access_key=$TF_STATE_ACCESS_KEY"
+            -backend-config="key=$TF_STATE_FILE_NAME"
       working-directory: ${{ env.WORKING_DIRECTORY }}/
     
     - name: Terraform Validate
