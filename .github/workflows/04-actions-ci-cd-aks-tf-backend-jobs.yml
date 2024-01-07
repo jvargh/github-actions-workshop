@@ -41,14 +41,14 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-        WORKING_DIRECTORY: aks_infra
+        WORKING_DIRECTORY: ../aks_infra
 
-    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
-    defaults:
-        run:
-          shell: bash
-          working-directory: ${{ env.WORKING_DIRECTORY }}
-                  
+    # # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    # defaults:
+    #     run:
+    #       shell: bash
+    #       working-directory: ${{ env.WORKING_DIRECTORY }}
+
     steps:
     - name: Login to Azure
       uses: azure/login@v1
