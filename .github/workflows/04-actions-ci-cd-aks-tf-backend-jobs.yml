@@ -14,7 +14,8 @@ env:
   INFRA_RESOURCE_GROUP: tfstate-resourcegroup
   TF_STATE_STORAGE_ACCOUNT_NAME: tfstatestorage102
   TF_STATE_CONTAINER_NAME: tfstate
-  TF_STATE_FILE_NAME: tfstate
+  TF_STATE_FILE_NAME: terraform.tfstate
+
   TF_STATE_ACCESS_KEY: "" # will be set later
     
   DOCKER_REPOSITORY: acrforaks102.azurecr.io
@@ -33,6 +34,9 @@ env:
   DB_ADMIN_LOGIN: sadmin
   DB_ADMIN_PASSWORD: "@Aa123456"
   STORAGE_NAME: storageforaks24
+
+
+  WORKING_DIRECTORY: 05_Web_Sql_database  
     
 jobs:
   create-terraform-backend:
@@ -67,10 +71,10 @@ jobs:
           cat <<EOT > backend.tf
           terraform {
             backend "azurerm" {
-              resource_group_name   = "$RESOURCE_GROUP_NAME"
-              storage_account_name  = "$STORAGE_ACCOUNT_NAME"
-              container_name        = "$CONTAINER_NAME"
-              key                   = "$BLOB_NAME"
+              resource_group_name   = "$INFRA_RESOURCE_GROUP"
+              storage_account_name  = "$TF_STATE_STORAGE_ACCOUNT_NAME"
+              container_name        = "$TF_STATE_CONTAINER_NAME"
+              key                   = "$TF_STATE_FILE_NAME"
             }
           }
           EOT
