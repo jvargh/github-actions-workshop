@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-        WORKING_DIRECTORY: ../aks_infra
+        WORKING_DIRECTORY: ../../aks_infra
 
     # # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     # defaults:
