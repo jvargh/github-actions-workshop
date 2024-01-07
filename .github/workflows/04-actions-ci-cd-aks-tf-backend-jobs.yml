@@ -1,9 +1,9 @@
-name: 4-actions-ci-cd-aks-tf-backend-jobs
+name: 04-actions-ci-cd-aks-tf-backend-jobs
 
 on:
   push:
     branches: [ main ]
-    paths: .github/workflows/4-actions-ci-cd-aks-tf-backend-jobs.yml
+    paths: .github/workflows/04-actions-ci-cd-aks-tf-backend-jobs.yml
   pull_request:
     branches:  none # [ main ]
   # Allows you to run this workflow manually from the Actions tab
