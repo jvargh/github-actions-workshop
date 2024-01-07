@@ -34,14 +34,21 @@ env:
   DB_ADMIN_LOGIN: sadmin
   DB_ADMIN_PASSWORD: "@Aa123456"
   STORAGE_NAME: storageforaks24
-
-  WORKING_DIRECTORY: aks_infra 
     
 jobs:
   create-terraform-backend:
     name: Create Terraform Backend
     runs-on: ubuntu-latest
 
+    env:
+        WORKING_DIRECTORY: aks_infra
+
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+        run:
+          shell: bash
+          working-directory: ${{ env.WORKING_DIRECTORY }}
+                  
     steps:
     - name: Login to Azure
       uses: azure/login@v1
