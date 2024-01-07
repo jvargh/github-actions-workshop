@@ -79,6 +79,7 @@ jobs:
         DB_ADMIN_PASSWORD: "@Aa123456"
         STORAGE_NAME: storageforsql024
     
+    # COMMENTED below - have storage for tf state file, seen after this block
     # - name: Replace azurerm with local in backend.tf
     #   uses: jacobtomlinson/gha-find-replace@v2
     #   with:
