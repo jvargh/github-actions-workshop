@@ -9,6 +9,12 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+env:
+  STORAGE_ACCOUNT_NAME: jvstoragetfstate024
+  RESOURCE_GROUP_NAME: rg-terraform-state
+  CONTAINER_NAME: tfstate
+  BLOB_NAME: terraform.tfstate
+
 jobs:
 
   build-deploy-aks:
@@ -17,10 +23,10 @@ jobs:
       DOCKER_REPOSITORY: jvargh
       IMAGE_NAME: web-app
       IMAGE_TAG: ${{ github.run_number }} # ${{ github.sha }}
-      AKS_RESOURCE_GROUP: rg-aks-cluster-tf-024
-      AKS_NAME: aks-cluster
-      ACR_NAME: acrforakstf024
-      TERRAFORM_VERSION: 1.1.9
+      AKS_RESOURCE_GROUP: aks-k8s-2024
+      AKS_NAME: aks-k8s-2024
+      ACR_NAME: acrforaks2024
+      TERRAFORM_VERSION: 1.6.6
       WORKING_DIRECTORY: aks_infra
     
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
@@ -72,13 +78,48 @@ jobs:
         DB_ADMIN_PASSWORD: "@Aa123456"
         STORAGE_NAME: storageforsql024
     
-    - name: Replace azurerm with local in backend.tf
-      uses: jacobtomlinson/gha-find-replace@v2
+    # - name: Replace azurerm with local in backend.tf
+    #   uses: jacobtomlinson/gha-find-replace@v2
+    #   with:
+    #     find: "azurerm"
+    #     replace: "local"
+    #     include: "aks_infra/backend.tf"
+    #     regex: true
+
+    - name: Create Terraform backend state storage
+      uses: Azure/cli@v1.0.6
       with:
-        find: "azurerm"
-        replace: "local"
-        include: "aks_infra/backend.tf"
-        regex: true
+        # Azure CLI version to be used to execute the script. If not provided, latest version is used
+        # azcliversion: 2.34.1 # optional, default is agentazcliversion
+        inlineScript: |
+          az version
+
+          # Create resource group
+          az group create --name $RESOURCE_GROUP_NAME --location eastus
+          
+          # Create storage account
+          az storage account create --name $STORAGE_ACCOUNT_NAME \
+              --resource-group $RESOURCE_GROUP_NAME \
+              --sku Standard_LRS \
+              --encryption-services blob
+          
+          # Create blob container
+          az storage container create --name $CONTAINER_NAME --account-name $STORAGE_ACCOUNT_NAME
+          
+          # generate backend.tf file
+          cd $WORKING_DIRECTORY
+          cat <<EOT > backend.tf
+          terraform {
+            backend "azurerm" {
+              resource_group_name   = "$RESOURCE_GROUP_NAME"
+              storage_account_name  = "$STORAGE_ACCOUNT_NAME"
+              container_name        = "$CONTAINER_NAME"
+              key                   = "$BLOB_NAME"
+            }
+          }
+          EOT
+          
+          cat backend.tf
 
     # Install the latest version of Terraform CLI
     - name: Install Terraform
