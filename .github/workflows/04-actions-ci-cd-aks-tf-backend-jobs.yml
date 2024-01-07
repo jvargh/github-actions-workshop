@@ -57,6 +57,13 @@ jobs:
             --name $TF_STATE_STORAGE_ACCOUNT_NAME \
             --sku Standard_LRS \
             --encryption-services blob
+          # Retrieve the storage account key
+          ACCOUNT_KEY=$(az storage account keys list --resource-group $INFRA_RESOURCE_GROUP --account-name $TF_STATE_STORAGE_ACCOUNT_NAME --query [0].value -o tsv)
+          # Create a storage container (for the Terraform State)
+          az storage container create --name $TF_STATE_CONTAINER_NAME --account-name $TF_STATE_STORAGE_ACCOUNT_NAME --account-key $ACCOUNT_KEY
+
+          echo "TF_STATE_ACCESS_KEY=$ACCOUNT_KEY" >> $GITHUB_ENV
+  
 
   create-terraform-infra:
     name: Create Infra with Terraform
@@ -66,22 +73,22 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Login to Azure
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    # - name: Login to Azure
+    #   uses: azure/login@v1
+    #   with:
+    #     creds: ${{ secrets.AZURE_CREDENTIALS }}
         
-    - name: Get TF backend storage account key
-      uses: azure/CLI@v1
-      with:
-        azcliversion: 2.27.2
-        inlineScript: |
-          # Retrieve the storage account key
-          ACCOUNT_KEY=$(az storage account keys list --resource-group $INFRA_RESOURCE_GROUP --account-name $TF_STATE_STORAGE_ACCOUNT_NAME --query [0].value -o tsv)
-          # Create a storage container (for the Terraform State)
-          az storage container create --name $TF_STATE_CONTAINER_NAME --account-name $TF_STATE_STORAGE_ACCOUNT_NAME --account-key $ACCOUNT_KEY
+    # - name: Get TF backend storage account key
+    #   uses: azure/CLI@v1
+    #   with:
+    #     azcliversion: 2.27.2
+    #     inlineScript: |
+    #       # Retrieve the storage account key
+    #       ACCOUNT_KEY=$(az storage account keys list --resource-group $INFRA_RESOURCE_GROUP --account-name $TF_STATE_STORAGE_ACCOUNT_NAME --query [0].value -o tsv)
+    #       # Create a storage container (for the Terraform State)
+    #       az storage container create --name $TF_STATE_CONTAINER_NAME --account-name $TF_STATE_STORAGE_ACCOUNT_NAME --account-key $ACCOUNT_KEY
 
-          echo "TF_STATE_ACCESS_KEY=$ACCOUNT_KEY" >> $GITHUB_ENV
+    #       echo "TF_STATE_ACCESS_KEY=$ACCOUNT_KEY" >> $GITHUB_ENV
     
     - name: Replace Variables in terraform.tfvars
       uses: datamonsters/replace-action@v2
