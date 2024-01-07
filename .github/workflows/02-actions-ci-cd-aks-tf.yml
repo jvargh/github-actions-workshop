@@ -96,21 +96,31 @@ jobs:
       run:
         terraform init
   
-    # Checks that all Terraform configuration files adhere to a canonical format
-    - name: Terraform Format
-      id: format
-      run: terraform fmt -check
-      continue-on-error: true
+    # # Checks that all Terraform configuration files adhere to a canonical format
+    # - name: Terraform Format
+    #   id: format
+    #   run: terraform fmt -check
+    #   continue-on-error: true
 
-    - name: Terraform Plan
-      id: plan
+    # - name: Terraform Plan
+    #   id: plan
+    #   env:
+    #     ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+    #     ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+    #     ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+    #     ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+    #   run: |
+    #     terraform plan -no-color 
+
+    - name: Import Azure Resource Group into Terraform State
+      run: |
+        terraform import azurerm_resource_group.rg /subscriptions/{{ secrets.ARM_SUBSCRIPTION_ID }}/resourceGroups/aks-k8s-2024
       env:
         ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
         ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID }}
         ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-        ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-      run: |
-        terraform plan -no-color 
+
 
     - name: Terraform Apply
       env:
