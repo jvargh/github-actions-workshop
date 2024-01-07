@@ -225,15 +225,15 @@ jobs:
     #   run:
     #     kubectl run --rm -i -t kubeadvisor --image=mcr.microsoft.com/aks/kubeadvisor --restart=Never
         
-    - name: Deploy Kured into AKS using Helm
-      run: |
-        helm repo add kured https://weaveworks.github.io/kured
-        helm upgrade kured kured/kured --namespace kured --install --create-namespace \
-          --set nodeSelector."beta\.kubernetes\.io/os"=linux \
-          --set configuration.startTime=9am \
-          --set configuration.endTime=5pm \
-          --set configuration.timeZone="America/Los_Angeles"
-          # --set configuration.rebootDays="[mo,tu,we,th,fr]"
+    # - name: Deploy Kured into AKS using Helm
+    #   run: |
+    #     helm repo add kured https://weaveworks.github.io/kured
+    #     helm upgrade kured kured/kured --namespace kured --install --create-namespace \
+    #       --set nodeSelector."beta\.kubernetes\.io/os"=linux \
+    #       --set configuration.startTime=9am \
+    #       --set configuration.endTime=5pm \
+    #       --set configuration.timeZone="America/Los_Angeles"
+    #       # --set configuration.rebootDays="[mo,tu,we,th,fr]"
           
     - name: Deploy Prometheus & Grafana into AKS using Helm
       run: |
