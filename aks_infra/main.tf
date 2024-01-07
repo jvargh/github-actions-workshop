@@ -43,7 +43,8 @@ data "azurerm_client_config" "current" {
 
 data "azurerm_user_assigned_identity" "identity" {
   name                = "${azurerm_kubernetes_cluster.k8s.name}-agentpool"
-  resource_group_name = azurerm_kubernetes_cluster.k8s.node_resource_group
+  # resource_group_name = azurerm_kubernetes_cluster.k8s.node_resource_group
+  resource_group_name = azurerm_kubernetes_cluster.k8s.resource_group_name
 }
 
 resource "azurerm_role_assignment" "role_acrpull" {
