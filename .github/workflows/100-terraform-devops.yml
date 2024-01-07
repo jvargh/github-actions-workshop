@@ -5,7 +5,7 @@ on:
     branches: [ main ]
     paths: .github/workflows/100-terraform-devops.yml
   pull_request:
-    branches:  
+    branches:  none # [ main ]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
   
