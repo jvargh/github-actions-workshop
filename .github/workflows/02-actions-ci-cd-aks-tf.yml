@@ -114,7 +114,7 @@ jobs:
 
     - name: Import Azure Resource Group into Terraform State
       run: |
-        terraform import azurerm_resource_group.rg /subscriptions/{{ secrets.ARM_SUBSCRIPTION_ID }}/resourceGroups/aks-k8s-2024
+        terraform import ${{ env.AKS_RESOURCE_GROUP }} /subscriptions/${{ secrets.ARM_SUBSCRIPTION_ID }}/resourceGroups/aks-k8s-2024
       env:
         ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
         ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
