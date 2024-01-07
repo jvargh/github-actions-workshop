@@ -159,7 +159,7 @@ jobs:
         ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
         ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       run: |
-        terraform plan -no-color 
+        terraform plan -no-color -lock=false  
 
     - name: Terraform Apply
       env:
@@ -167,7 +167,7 @@ jobs:
         ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
         ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
         ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-      run: terraform apply -auto-approve
+      run: terraform apply -auto-approve -lock=false  
 
     - name: Replace Image Name in Deployment
       uses: cschleiden/replace-tokens@v1
