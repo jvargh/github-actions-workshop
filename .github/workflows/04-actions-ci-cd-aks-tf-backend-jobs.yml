@@ -80,7 +80,7 @@ jobs:
           ACCOUNT_KEY=$(az storage account keys list --resource-group $INFRA_RESOURCE_GROUP --account-name $TF_STATE_STORAGE_ACCOUNT_NAME --query [0].value -o tsv)
           
           # Create a storage container (for the Terraform State)
-          az storage container create --name $TF_STATE_CONTAINER_NAME --account-name $TF_STATE_STORAGE_ACCOUNT_NAME --account-key $ACCOUNT_KEY
+          az storage container create --name $TF_STATE_CONTAINER_NAME --account-name $TF_STATE_STORAGE_ACCOUNT_NAME
 
           # Generate backend.tf file
           cd $WORKING_DIRECTORY
@@ -153,10 +153,10 @@ jobs:
       working-directory: ${{ env.WORKING_DIRECTORY }}
       continue-on-error: true
       
-    - name: Terraform Apply
-      # if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-      run: terraform apply -auto-approve out.plan
-      working-directory: ${{ env.WORKING_DIRECTORY }}
+    # - name: Terraform Apply
+    #   # if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+    #   run: terraform apply -auto-approve out.plan
+    #   working-directory: ${{ env.WORKING_DIRECTORY }}
 
 
 
