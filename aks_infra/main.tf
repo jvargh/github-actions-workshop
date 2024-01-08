@@ -1,6 +1,9 @@
 resource "azurerm_resource_group" "rg" {
   name     = var.resource_group_name
   location = var.location
+  tags = {
+    environment = "production"
+  }  
 }
 
 resource "azurerm_kubernetes_cluster" "k8s" {
