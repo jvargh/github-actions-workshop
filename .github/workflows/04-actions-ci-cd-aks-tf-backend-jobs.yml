@@ -54,92 +54,91 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    # - name: Login to Azure with Service Principal
-    #   uses: Azure/login@v1.4.3
-    #   with:
-    #     # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
-    #     creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: Login to Azure with Service Principal
+      uses: Azure/login@v1.4.3
+      with:
+        # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
       
-    # - name: Create Terraform backend state storage
-    #   uses: Azure/cli@v1.0.6
-    #   with:
-    #     # Azure CLI version to be used to execute the script. If not provided, latest version is used
-    #     # azcliversion: 2.34.1 # optional, default is agentazcliversion
-    #     inlineScript: |
-    #       az version
+    - name: Create Terraform backend state storage
+      uses: Azure/cli@v1.0.6
+      with:
+        # Azure CLI version to be used to execute the script. If not provided, latest version is used
+        # azcliversion: 2.34.1 # optional, default is agentazcliversion
+        inlineScript: |
+          az version
 
-    #       # Create the resource group
-    #       az group create -n $INFRA_RESOURCE_GROUP -l $LOCATION          
+          # Create the resource group
+          az group create -n $INFRA_RESOURCE_GROUP -l $LOCATION          
           
-    #       # Create the storage account
-    #       az storage account create -g $INFRA_RESOURCE_GROUP -l $LOCATION \
-    #         --name $TF_STATE_STORAGE_ACCOUNT_NAME \
-    #         --sku Standard_LRS \
-    #         --encryption-services blob
+          # Create the storage account
+          az storage account create -g $INFRA_RESOURCE_GROUP -l $LOCATION \
+            --name $TF_STATE_STORAGE_ACCOUNT_NAME \
+            --sku Standard_LRS \
+            --encryption-services blob
           
-    #       # Retrieve the storage account key
-    #       ACCOUNT_KEY=$(az storage account keys list --resource-group $INFRA_RESOURCE_GROUP --account-name $TF_STATE_STORAGE_ACCOUNT_NAME --query [0].value -o tsv)         
-    #       TF_STATE_ACCESS_KEY=$ACCOUNT_KEY
+          # Retrieve the storage account key
+          ACCOUNT_KEY=$(az storage account keys list --resource-group $INFRA_RESOURCE_GROUP --account-name $TF_STATE_STORAGE_ACCOUNT_NAME --query [0].value -o tsv)         
+          TF_STATE_ACCESS_KEY=$ACCOUNT_KEY
 
-    #       # Create a storage container (for the Terraform State)
-    #       az storage container create --name $TF_STATE_CONTAINER_NAME --account-name $TF_STATE_STORAGE_ACCOUNT_NAME
+          # Create a storage container (for the Terraform State)
+          az storage container create --name $TF_STATE_CONTAINER_NAME --account-name $TF_STATE_STORAGE_ACCOUNT_NAME
 
-    #       # Generate backend.tf file
-    #       cd $WORKING_DIRECTORY
-    #       cat <<EOT > backend.tf
-    #       terraform {
-    #         backend "azurerm" {
-    #           resource_group_name   = "$INFRA_RESOURCE_GROUP"
-    #           storage_account_name  = "$TF_STATE_STORAGE_ACCOUNT_NAME"
-    #           container_name        = "$TF_STATE_CONTAINER_NAME"
-    #           key                   = "$TF_STATE_FILE_NAME"
-    #         }
-    #       }
-    #       EOT
+          # Generate backend.tf file
+          cd $WORKING_DIRECTORY
+          cat <<EOT > backend.tf
+          terraform {
+            backend "azurerm" {
+              resource_group_name   = "$INFRA_RESOURCE_GROUP"
+              storage_account_name  = "$TF_STATE_STORAGE_ACCOUNT_NAME"
+              container_name        = "$TF_STATE_CONTAINER_NAME"
+              key                   = "$TF_STATE_FILE_NAME"
+            }
+          }
+          EOT
           
-    #       cat backend.tf     
+          cat backend.tf     
 
-    #       echo "TF_STATE_ACCESS_KEY=$ACCOUNT_KEY" >> $GITHUB_ENV
-
+          echo "TF_STATE_ACCESS_KEY=$ACCOUNT_KEY" >> $GITHUB_ENV
     
-    # - name: Replace Variables in terraform.tfvars
-    #   uses: datamonsters/replace-action@v2
-    #   with:
-    #     files: ${{ env.WORKING_DIRECTORY }}/terraform.tfvars
-    #     replacements: '__AKS_RESOURCE_GROUP__=${{ env.AKS_RESOURCE_GROUP }},__AKS_NAME__=${{ env.AKS_NAME }},__ACR_NAME__=${{ env.ACR_NAME }},__SQL_INSTANCE_NAME__=${{ env.SQL_INSTANCE_NAME }},__DB_ADMIN_LOGIN__=${{ env.DB_ADMIN_LOGIN }},__DB_ADMIN_PASSWORD__=${{ env.DB_ADMIN_PASSWORD }},__STORAGE_NAME__=${{ env.STORAGE_NAME }}'
+    - name: Replace Variables in terraform.tfvars
+      uses: datamonsters/replace-action@v2
+      with:
+        files: ${{ env.WORKING_DIRECTORY }}/terraform.tfvars
+        replacements: '__AKS_RESOURCE_GROUP__=${{ env.AKS_RESOURCE_GROUP }},__AKS_NAME__=${{ env.AKS_NAME }},__ACR_NAME__=${{ env.ACR_NAME }},__SQL_INSTANCE_NAME__=${{ env.SQL_INSTANCE_NAME }},__DB_ADMIN_LOGIN__=${{ env.DB_ADMIN_LOGIN }},__DB_ADMIN_PASSWORD__=${{ env.DB_ADMIN_PASSWORD }},__STORAGE_NAME__=${{ env.STORAGE_NAME }}'
  
-    # - name: Setup Terraform
-    #   uses: hashicorp/setup-terraform@v1
-    #   with:
-    #     terraform_version: 1.6.6
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 1.6.6
     
-    # - name: Terraform fmt
-    #   id: fmt
-    #   run: terraform fmt
-    #   working-directory: ${{ env.WORKING_DIRECTORY }}
-    #   continue-on-error: true
+    - name: Terraform fmt
+      id: fmt
+      run: terraform fmt
+      working-directory: ${{ env.WORKING_DIRECTORY }}
+      continue-on-error: true
     
-    # - name: Terraform Init (Azure Backend)
-    #   run: terraform init
-    #         -backend-config="storage_account_name=$TF_STATE_STORAGE_ACCOUNT_NAME"
-    #         -backend-config="container_name=$TF_STATE_CONTAINER_NAME"
-    #         -backend-config="access_key=$TF_STATE_ACCESS_KEY"
-    #         -backend-config="key=$TF_STATE_FILE_NAME"
-    #   working-directory: ${{ env.WORKING_DIRECTORY }}/
+    - name: Terraform Init (Azure Backend)
+      run: terraform init
+            -backend-config="storage_account_name=$TF_STATE_STORAGE_ACCOUNT_NAME"
+            -backend-config="container_name=$TF_STATE_CONTAINER_NAME"
+            -backend-config="access_key=$TF_STATE_ACCESS_KEY"
+            -backend-config="key=$TF_STATE_FILE_NAME"
+      working-directory: ${{ env.WORKING_DIRECTORY }}/
     
-    # - name: Terraform Validate
-    #   run: terraform validate -no-color
-    #   working-directory: ${{ env.WORKING_DIRECTORY }}
+    - name: Terraform Validate
+      run: terraform validate -no-color
+      working-directory: ${{ env.WORKING_DIRECTORY }}
     
-    # - name: Terraform Plan
-    #   run: terraform plan -out out.plan -var-file="terraform.tfvars"
-    #   working-directory: ${{ env.WORKING_DIRECTORY }}
-    #   continue-on-error: true
+    - name: Terraform Plan
+      run: terraform plan -out out.plan -var-file="terraform.tfvars"
+      working-directory: ${{ env.WORKING_DIRECTORY }}
+      continue-on-error: true
       
-    # - name: Terraform Apply
-    #   # if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-    #   run: terraform apply -auto-approve out.plan
-    #   working-directory: ${{ env.WORKING_DIRECTORY }}
+    - name: Terraform Apply
+      # if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+      run: terraform apply -auto-approve out.plan
+      working-directory: ${{ env.WORKING_DIRECTORY }}
 
 
 
@@ -152,35 +151,35 @@ jobs:
     steps:
     - uses: actions/checkout@v2
  
-#     - name: Build Docker Image
-#       run:
-#         docker build ./aks_MvcApp/ --file ./aks_MvcApp/Dockerfile --tag ${{ env.DOCKER_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+    - name: Build Docker Image
+      run:
+        docker build ./aks_MvcApp/ --file ./aks_MvcApp/Dockerfile --tag ${{ env.DOCKER_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
 
-#     # - name: Scan Docker Image using Trivy and Dockle
-#     #   uses: Azure/container-scan@v0
-#     #   continue-on-error: true
-#     #   with:
-#     #     image-name: ${{ env.DOCKER_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+    # - name: Scan Docker Image using Trivy and Dockle
+    #   uses: Azure/container-scan@v0
+    #   continue-on-error: true
+    #   with:
+    #     image-name: ${{ env.DOCKER_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
               
-#     # - name: Scan Docker Image using Trivy
-#     #   continue-on-error: true
-#     #   run:
-#     #     docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy --exit-code 0 --severity MEDIUM,HIGH,CRITICAL --ignore-unfixed $DOCKER_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
+    # - name: Scan Docker Image using Trivy
+    #   continue-on-error: true
+    #   run:
+    #     docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy --exit-code 0 --severity MEDIUM,HIGH,CRITICAL --ignore-unfixed $DOCKER_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
 
-#     - name: Login to Azure with Service Principal
-#       uses: Azure/login@v1.4.3
-#       with:
-#         # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
-#         creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: Login to Azure with Service Principal
+      uses: Azure/login@v1.4.3
+      with:
+        # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-#     - name: Login to ACR
-#       run: |
-#         ACR_PASSWORD=$(az acr credential show -n ${{ env.ACR_NAME }} -o tsv --query passwords[0].value)
-#         docker login ${{ env.DOCKER_REPOSITORY }} --username ${{ env.ACR_NAME }} --password $ACR_PASSWORD
+    - name: Login to ACR
+      run: |
+        ACR_PASSWORD=$(az acr credential show -n ${{ env.ACR_NAME }} -o tsv --query passwords[0].value)
+        docker login ${{ env.DOCKER_REPOSITORY }} --username ${{ env.ACR_NAME }} --password $ACR_PASSWORD
         
-#     - name: Push Image to ACR
-#       run: |
-#         docker push ${{ env.DOCKER_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+    - name: Push Image to ACR
+      run: |
+        docker push ${{ env.DOCKER_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
      
 
 
@@ -227,7 +226,7 @@ jobs:
         sleep 30s
         kubectl logs job.batch/kube-bench
         kubectl delete job.batch/kube-bench
-                  
+
     # - name: Run Kube Advisor to check for Resource Limits
     #   continue-on-error: true
     #   run:
