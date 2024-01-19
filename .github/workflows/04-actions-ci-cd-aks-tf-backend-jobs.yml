@@ -23,13 +23,13 @@ env:
   ARM_SUBSCRIPTION_ID:  ${{ secrets.ARM_SUBSCRIPTION_ID }}
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
-  AKS_RESOURCE_GROUP: aks-24-rg
-  AKS_NAME: aks-24
-  ACR_NAME: acrforaks24
-  SQL_INSTANCE_NAME: sqlforaks24
+  AKS_RESOURCE_GROUP: aks-24-rg1
+  AKS_NAME: aks-241
+  ACR_NAME: acrforaks241
+  SQL_INSTANCE_NAME: sqlforaks241
   DB_ADMIN_LOGIN: sadmin
   DB_ADMIN_PASSWORD: "@Aa123456"
-  STORAGE_NAME: storageforaks24
+  STORAGE_NAME: storageforaks241
 
   DOCKER_REPOSITORY: acrforaks24.azurecr.io
   IMAGE_NAME: webapp
