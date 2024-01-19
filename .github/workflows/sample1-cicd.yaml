@@ -34,7 +34,7 @@ jobs:
       - name: Test code
         run: npm run test
   output-info:
-    needs: deploy
+    needs: test
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -44,7 +44,7 @@ jobs:
       - name: Output event details
         run: echo "${{ toJSON(github.event) }}"                
   deploy:
-    needs: test
+    needs: output-info
     runs-on: ubuntu-latest
     defaults:
       run:
