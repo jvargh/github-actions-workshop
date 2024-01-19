@@ -36,10 +36,6 @@ jobs:
   output-info:
     needs: test
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: ${{ env.WORKING_DIRECTORY }}     
     steps:
       - name: Output event details
         run: echo "${{ toJSON(github.event) }}"                
