@@ -1,6 +1,10 @@
 name: sample1-deployment
 on: 
   push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/sample1-cicd.yml
   workflow_dispatch:
 env:
   WORKING_DIRECTORY: sample1
