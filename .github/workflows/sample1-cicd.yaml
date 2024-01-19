@@ -1,7 +1,7 @@
 name: sample1-deployment
 on: push
 env:
-  WORKING_DIRECTORY: aks_infra
+  WORKING_DIRECTORY: sample1
   
 jobs:
   lint:    
