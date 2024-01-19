@@ -31,7 +31,7 @@ env:
   DB_ADMIN_PASSWORD: "@Aa123456"
   STORAGE_NAME: storageforaks241
 
-  DOCKER_REPOSITORY: acrforaks24.azurecr.io
+  DOCKER_REPOSITORY: acrforaks241.azurecr.io
   IMAGE_NAME: webapp
   IMAGE_TAG: 30
 #   IMAGE_TAG: ${{ github.run_number }}
