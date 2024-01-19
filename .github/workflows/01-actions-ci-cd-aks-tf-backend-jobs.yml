@@ -2,10 +2,21 @@ name: 01-actions-ci-cd-aks-tf-backend-jobs
 
 on:
   push:
-    branches: [ main ]
-    paths: .github/workflows/01-actions-ci-cd-aks-tf-backend-jobs.yml
+    branches:
+      - main
+    paths:
+      - .github/workflows/01-actions-ci-cd-aks-tf-backend-jobs.yml
+      - aks_infra/**
+      - aks_kubernetes/**
+      - aks_MvcApp/**
   pull_request:
     branches:
+      - '*'  # This allows pull requests from any branch to trigger the workflow
+    paths:
+      - .github/workflows/01-actions-ci-cd-aks-tf-backend-jobs.yml
+      - aks_infra/**
+      - aks_kubernetes/**
+      - aks_MvcApp/**
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
