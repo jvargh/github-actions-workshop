@@ -1,8 +1,15 @@
 name: sample1-deployment
 on: push
+env:
+  WORKING_DIRECTORY: aks_infra
+  
 jobs:
-  lint:
+  lint:    
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ env.WORKING_DIRECTORY }}    
     steps: 
       - name: Get code
         uses: actions/checkout@v3
@@ -13,6 +20,10 @@ jobs:
   test:
     needs: lint
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ env.WORKING_DIRECTORY }}     
     steps: 
       - name: Get code
         uses: actions/checkout@v3
@@ -23,6 +34,10 @@ jobs:
   deploy:
     needs: test
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ env.WORKING_DIRECTORY }}     
     steps:
       - name: Get code
         uses: actions/checkout@v3
@@ -35,6 +50,10 @@ jobs:
   output-info:
     needs: deploy
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ env.WORKING_DIRECTORY }}     
     steps:
       - name: Output event details
         run: echo "${{ toJSON(github.event) }}"        

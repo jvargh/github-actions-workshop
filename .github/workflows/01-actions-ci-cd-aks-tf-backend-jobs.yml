@@ -46,7 +46,6 @@ env:
   IMAGE_NAME: webapp
   IMAGE_TAG: 30
 #   IMAGE_TAG: ${{ github.run_number }}
-  
   WORKING_DIRECTORY: aks_infra
   K8S_DIRECTORY: aks_kubernetes
 
