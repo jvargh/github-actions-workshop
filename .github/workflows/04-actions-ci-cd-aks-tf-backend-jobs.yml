@@ -37,6 +37,7 @@ env:
 #   IMAGE_TAG: ${{ github.run_number }}
   
   WORKING_DIRECTORY: aks_infra
+  K8S_DIRECTORY: aks_kubernetes
 
 jobs:
   create-terraform-infra:
@@ -194,7 +195,7 @@ jobs:
     - name: Replace Image Repository, Name and Tag in YAML deployment
       uses: datamonsters/replace-action@v2
       with:
-        files: kubernetes/mvc-deployment.azure.yaml
+        files: ${{ env.K8S_DIRECTORY }}/mvc-deployment.azure.yaml
         replacements: '__DOCKER_REPOSITORY__=${{ env.DOCKER_REPOSITORY }},__IMAGE_NAME__=${{ env.IMAGE_NAME }},__IMAGE_TAG__=${{ env.IMAGE_TAG }}'
         
     - name: Login to Azure
@@ -213,11 +214,11 @@ jobs:
       uses: Azure/k8s-deploy@v1
       with:
         manifests: |
-          kubernetes/mssql-pv.azure.yaml
-          kubernetes/mssql-secret.yaml
-          kubernetes/mssql-deployment.yaml
-          kubernetes/mvc-deployment.azure.yaml
-          kubernetes/mssql-configmap.yaml
+          ${{ env.K8S_DIRECTORY }}/mssql-pv.azure.yaml
+          ${{ env.K8S_DIRECTORY }}/mssql-secret.yaml
+          ${{ env.K8S_DIRECTORY }}/mssql-deployment.yaml
+          ${{ env.K8S_DIRECTORY }}/mvc-deployment.azure.yaml
+          ${{ env.K8S_DIRECTORY }}/mssql-configmap.yaml
 
     - name: Run Kube-Bench to check cluster config
       continue-on-error: true
