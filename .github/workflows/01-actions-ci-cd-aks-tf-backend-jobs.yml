@@ -67,7 +67,8 @@ jobs:
     - name: Login to Azure with Service Principal
       uses: Azure/login@v1.6.0
       with:
-        # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
+        # Paste output of below cmd as value of secret variable: AZURE_CREDENTIALS
+        # az ad sp create-for-rbac --name "spn-githubactions" --role Owner --scope /subscriptions/<sub-id> --sdk-auth
         creds: ${{ secrets.AZURE_CREDENTIALS }}
       
     - name: Create Terraform backend state storage
