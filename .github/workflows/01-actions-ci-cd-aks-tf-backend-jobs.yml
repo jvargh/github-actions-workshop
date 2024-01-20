@@ -1,5 +1,4 @@
 name: 01-actions-ci-cd-aks-tf-backend-jobs
-
 on:
   push:
     branches:
@@ -23,7 +22,7 @@ on:
 env:
   LOCATION: eastus
   INFRA_RESOURCE_GROUP: tfstate-resourcegroup
-  TF_STATE_STORAGE_ACCOUNT_NAME: tfstatestorage102
+  TF_STATE_STORAGE_ACCOUNT_NAME: tfstatestorage103
   TF_STATE_CONTAINER_NAME: tfstate
   TF_STATE_FILE_NAME: terraform.tfstate
 
