@@ -9,6 +9,8 @@ on:
       - aks_kubernetes/**
       - aks_MvcApp/**
   pull_request:
+    types:
+      - opened
     branches:
       - '*'  # This allows pull requests from any branch to trigger the workflow
     paths:
