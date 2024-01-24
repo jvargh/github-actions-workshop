@@ -193,7 +193,7 @@ jobs:
 
 
   build-scan-container:
-    name: Build & Push Docker container
+    name: Build & Scan container
     runs-on: ubuntu-latest
     needs: [apply-terraform]
         
