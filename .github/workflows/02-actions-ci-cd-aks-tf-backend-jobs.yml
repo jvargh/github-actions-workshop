@@ -151,6 +151,8 @@ jobs:
   apply-terraform:
     name: Apply Terraform Backend
     runs-on: ubuntu-latest
+    needs: [prepare-terraform]
+
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
       run:
