@@ -149,7 +149,7 @@ jobs:
       continue-on-error: true
       
     - name: Terraform Apply
-      # if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+      if: github.ref == 'refs/heads/master' && github.event_name == 'push'
       run: terraform apply -auto-approve out.plan
       working-directory: ${{ env.WORKING_DIRECTORY }}
 
@@ -168,7 +168,7 @@ jobs:
       run:
         docker build ./aks_MvcApp/ --file ./aks_MvcApp/Dockerfile --tag ${{ env.DOCKER_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
 
-    - name: Scan Docker Image using Trivy 
+    - name: Scan Docker Image using Trivy and Dockle
       uses: Azure/container-scan@v0
       continue-on-error: true
       with:
