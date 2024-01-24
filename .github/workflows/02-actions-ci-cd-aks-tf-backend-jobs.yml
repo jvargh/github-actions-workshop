@@ -149,12 +149,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: [prepare-terraform]
 
-    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: ${{ env.WORKING_DIRECTORY }}
-
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'        
     steps:
     # Checkout the repository to the GitHub Actions runner
