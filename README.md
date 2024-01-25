@@ -266,7 +266,7 @@ cluster configuration.
 -   Azure subscription and appropriate permissions.
 
 -   GitHub repository secrets configured with Azure credentials. This is setup in Settings for the repository. Paste output of this cmd as value of AZURE_CREDENTIALS. The remaining ARM secrets are also derived from the output of this cmd.
-        # az ad sp create-for-rbac --name "spn-githubactions" --role Owner --scope /subscriptions/<sub-id> --sdk-auth
+    ```# az ad sp create-for-rbac --name "spn-githubactions" --role Owner --scope /subscriptions/<sub-id> --sdk-auth```
   
   ![image](https://github.com/jvargh/github-actions-workshop/assets/3197295/36a9584e-68c0-4392-8c3e-15e8420e3356)
 
