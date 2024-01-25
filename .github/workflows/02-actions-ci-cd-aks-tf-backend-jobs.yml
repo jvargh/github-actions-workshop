@@ -162,11 +162,12 @@ jobs:
         files: ${{ env.WORKING_DIRECTORY }}/terraform.tfvars
         replacements: '__AKS_RESOURCE_GROUP__=${{ env.AKS_RESOURCE_GROUP }},__AKS_NAME__=${{ env.AKS_NAME }},__ACR_NAME__=${{ env.ACR_NAME }},__SQL_INSTANCE_NAME__=${{ env.SQL_INSTANCE_NAME }},__DB_ADMIN_LOGIN__=${{ env.DB_ADMIN_LOGIN }},__DB_ADMIN_PASSWORD__=${{ env.DB_ADMIN_PASSWORD }},__STORAGE_NAME__=${{ env.STORAGE_NAME }}'
 
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        terraform_version: 1.6.6
-    
+    - name: Terraform fmt
+      id: fmt
+      run: terraform fmt
+      working-directory: ${{ env.WORKING_DIRECTORY }}
+      continue-on-error: true
+  
     - name: Terraform Init (Azure Backend)
       run: terraform init
             -backend-config="storage_account_name=$TF_STATE_STORAGE_ACCOUNT_NAME"
@@ -174,11 +175,15 @@ jobs:
             -backend-config="access_key=$TF_STATE_ACCESS_KEY"
             -backend-config="key=$TF_STATE_FILE_NAME"
       working-directory: ${{ env.WORKING_DIRECTORY }}/
-
-    - name: Terraform Apply
-      #if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-      run: terraform apply -auto-approve out.plan
+    
+    - name: Terraform Validate
+      run: terraform validate -no-color
       working-directory: ${{ env.WORKING_DIRECTORY }}
+    
+    - name: Terraform Plan
+      run: terraform plan -out out.plan -var-file="terraform.tfvars"
+      working-directory: ${{ env.WORKING_DIRECTORY }}
+      continue-on-error: true
 
 
   build-scan-container:
