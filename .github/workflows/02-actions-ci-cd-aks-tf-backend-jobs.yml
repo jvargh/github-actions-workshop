@@ -143,9 +143,8 @@ jobs:
   apply-terraform:
     name: Apply Terraform Backend
     runs-on: ubuntu-latest
-    needs: prepare-terraform
 
-    if: github.event.pull_request.merged == true   
+    if: github.event.pull_request.merged == true  && github.event_name == 'puLL_request'
     steps:      
     - name: Checkout
       uses: actions/checkout@v2
