@@ -265,6 +265,7 @@ cluster configuration.
 
 -   Azure subscription and appropriate permissions.
 
--   GitHub repository secrets configured with Azure credentials.
+-   GitHub repository secrets configured with Azure credentials. This is setup in Settings for the repository.
+  ![image](https://github.com/jvargh/github-actions-workshop/assets/3197295/36a9584e-68c0-4392-8c3e-15e8420e3356)
 
 -   Terraform and Docker configurations in place.
