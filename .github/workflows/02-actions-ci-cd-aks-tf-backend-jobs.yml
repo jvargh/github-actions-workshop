@@ -10,6 +10,7 @@ on:
       - 'aks_MvcApp/**'
   pull_request:
     branches: [main]
+    types: closed
     paths:
       - '.github/workflows/02-actions-ci-cd-aks-tf-backend-jobs.yml'
       - 'aks_infra/**'
