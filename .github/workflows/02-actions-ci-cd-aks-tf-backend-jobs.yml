@@ -51,7 +51,6 @@ jobs:
   prepare-terraform:
     name: Prepare Terraform Backend
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
