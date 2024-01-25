@@ -48,10 +48,10 @@ env:
 
 jobs:
   prepare-terraform:
-    name: Prepare Terraform Backend
+    name: Plan Terraform Backend
     runs-on: ubuntu-latest
     
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && github.event.pull_request.merged == false
     steps:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
@@ -144,7 +144,7 @@ jobs:
     name: Apply Terraform Backend
     runs-on: ubuntu-latest
 
-    if: github.event.pull_request.merged == true  && github.event_name == 'puLL_request'
+    if: github.event_name == 'puLL_request' && github.event.pull_request.merged == true  
     steps:      
     - name: Checkout
       uses: actions/checkout@v2
