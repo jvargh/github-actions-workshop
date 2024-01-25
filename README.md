@@ -1,3 +1,30 @@
+# Table of Contents
+
+1. [Introduction](#introduction)
+2. [GitHub Actions - Demo 1](#github-actions---demo-1)
+    - [Usage](#usage)
+    - [Workflow 'sample1-cicd.yaml' Overview](#workflow-sample1-cicdyaml-overview)
+    - [Jobs Breakdown](#jobs-breakdown)
+        - [Lint](#1-lint)
+        - [Test](#2-test)
+        - [Deploy](#3-deploy)
+3. [GitHub Actions - CI/CD with AKS and Terraform - Demo 2](#github-actions---cicd-with-aks-and-terraform---demo-2)
+    - [Usage](#usage-1)
+    - [Workflow: 01-actions-ci-cd-aks-tf-backend-jobs](#workflow-01-actions-ci-cd-aks-tf-backend-jobs)
+    - [Jobs Breakdown](#jobs-breakdown-1)
+        - [Create Terraform Infrastructure](#create-terraform-infrastructure)
+        - [Build and Push Container](#build-and-push-container)
+        - [Deploy App to AKS](#deploy-app-to-aks)
+4. [GitHub Actions -- AKS CI/CD with PR and Merge - Demo 3](#github-actions----aks-cicd-with-pr-and-merge---demo-3)
+    - [Usage](#usage-2)
+    - [Workflow: 02-actions-ci-cd-aks-tf-backend-jobs](#workflow-02-actions-ci-cd-aks-tf-backend-jobs)
+    - [Jobs Breakdown](#jobs-breakdown-2)
+        - [Prepare Terraform](#prepare-terraform)
+        - [Apply Terraform](#apply-terraform)
+        - [Build-Push-Scan Container](#build-push-scan-container)
+        - [Deploy App to AKS in Production](#deploy-app-aks-prod)
+    - [Prerequisites](#prerequisites)
+    
 ## Introduction
 
 The aim of this repository is to demonstrate the capabilities of GitHub
