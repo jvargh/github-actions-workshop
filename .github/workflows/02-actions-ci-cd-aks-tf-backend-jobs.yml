@@ -156,6 +156,47 @@ jobs:
         # az ad sp create-for-rbac --name "spn-githubactions" --role Owner --scope /subscriptions/<sub-id> --sdk-auth
         creds: ${{ secrets.AZURE_CREDENTIALS }}
       
+    - name: Create Terraform backend state storage
+      uses: Azure/cli@v1.0.6
+      with:
+        # Azure CLI version to be used to execute the script. If not provided, latest version is used
+        # azcliversion: 2.34.1 # optional, default is agentazcliversion
+        inlineScript: |
+          az version
+
+          # Create the resource group
+          az group create -n $INFRA_RESOURCE_GROUP -l $LOCATION          
+          
+          # Create the storage account
+          az storage account create -g $INFRA_RESOURCE_GROUP -l $LOCATION \
+            --name $TF_STATE_STORAGE_ACCOUNT_NAME \
+            --sku Standard_LRS \
+            --encryption-services blob
+          
+          # Retrieve the storage account key
+          ACCOUNT_KEY=$(az storage account keys list --resource-group $INFRA_RESOURCE_GROUP --account-name $TF_STATE_STORAGE_ACCOUNT_NAME --query [0].value -o tsv)         
+          TF_STATE_ACCESS_KEY=$ACCOUNT_KEY
+
+          # Create a storage container (for the Terraform State)
+          az storage container create --name $TF_STATE_CONTAINER_NAME --account-name $TF_STATE_STORAGE_ACCOUNT_NAME
+
+          # Generate backend.tf file
+          cd $WORKING_DIRECTORY
+          cat <<EOT > backend.tf
+          terraform {
+            backend "azurerm" {
+              resource_group_name   = "$INFRA_RESOURCE_GROUP"
+              storage_account_name  = "$TF_STATE_STORAGE_ACCOUNT_NAME"
+              container_name        = "$TF_STATE_CONTAINER_NAME"
+              key                   = "$TF_STATE_FILE_NAME"
+            }
+          }
+          EOT
+          
+          cat backend.tf     
+
+          echo "TF_STATE_ACCESS_KEY=$ACCOUNT_KEY" >> $GITHUB_ENV    
+
     - name: Replace Variables in terraform.tfvars
       uses: datamonsters/replace-action@v2
       with:
