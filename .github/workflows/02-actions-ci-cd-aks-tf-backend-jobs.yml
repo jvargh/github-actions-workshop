@@ -1,13 +1,13 @@
 name: 02-actions-ci-cd-aks-tf-backend-jobs
 
 on:
-  # push:
-  #   branches: [main]
-  #   paths:
-  #     - '.github/workflows/02-actions-ci-cd-aks-tf-backend-jobs.yml'
-  #     - 'aks_infra/**'
-  #     - 'aks_kubernetes/**'
-  #     - 'aks_MvcApp/**'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/02-actions-ci-cd-aks-tf-backend-jobs.yml'
+      - 'aks_infra/**'
+      - 'aks_kubernetes/**'
+      - 'aks_MvcApp/**'
   pull_request:
     branches: [main]
     paths:
@@ -50,6 +50,7 @@ jobs:
   prepare-terraform:
     name: Prepare Terraform Backend
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
