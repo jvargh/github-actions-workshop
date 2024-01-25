@@ -1,16 +1,15 @@
 name: 02-actions-ci-cd-aks-tf-backend-jobs
 on:
   push:
-    branches:
-      - main
+    branches: [main]
     paths:
       - .github/workflows/02-actions-ci-cd-aks-tf-backend-jobs.yml
       - aks_infra/**
       - aks_kubernetes/**
       - aks_MvcApp/**
   pull_request:
-    branches:
-      - main
+    branches: [main]
+    types: [closed, opened]
     paths:
       - .github/workflows/02-actions-ci-cd-aks-tf-backend-jobs.yml
       - aks_infra/**
@@ -147,17 +146,11 @@ jobs:
     needs: prepare-terraform
 
     if: github.event.pull_request.merged == true   
-    steps:   
+    steps:      
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
       with:
         terraform_version: 1.6.6
-   
-    - name: Terraform fmt
-      id: fmt
-      run: terraform fmt
-      working-directory: ${{ env.WORKING_DIRECTORY }}
-      continue-on-error: true
     
     - name: Terraform Init (Azure Backend)
       run: terraform init
@@ -198,7 +191,7 @@ jobs:
 
 
   push-container:
-    name: Build & Push Docker container
+    name: Push Docker container to ACR
     runs-on: ubuntu-latest
     needs: [build-scan-container]  
 
