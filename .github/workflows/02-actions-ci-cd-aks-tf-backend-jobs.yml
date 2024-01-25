@@ -162,21 +162,10 @@ jobs:
         files: ${{ env.WORKING_DIRECTORY }}/terraform.tfvars
         replacements: '__AKS_RESOURCE_GROUP__=${{ env.AKS_RESOURCE_GROUP }},__AKS_NAME__=${{ env.AKS_NAME }},__ACR_NAME__=${{ env.ACR_NAME }},__SQL_INSTANCE_NAME__=${{ env.SQL_INSTANCE_NAME }},__DB_ADMIN_LOGIN__=${{ env.DB_ADMIN_LOGIN }},__DB_ADMIN_PASSWORD__=${{ env.DB_ADMIN_PASSWORD }},__STORAGE_NAME__=${{ env.STORAGE_NAME }}'
 
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Login to Azure with Service Principal
-      uses: Azure/login@v1.6.0
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
       with:
-        # Paste output of below cmd as value of secret variable: AZURE_CREDENTIALS
-        # az ad sp create-for-rbac --name "spn-githubactions" --role Owner --scope /subscriptions/<sub-id> --sdk-auth
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-      
-    - name: Replace Variables in terraform.tfvars
-      uses: datamonsters/replace-action@v2
-      with:
-        files: ${{ env.WORKING_DIRECTORY }}/terraform.tfvars
-        replacements: '__AKS_RESOURCE_GROUP__=${{ env.AKS_RESOURCE_GROUP }},__AKS_NAME__=${{ env.AKS_NAME }},__ACR_NAME__=${{ env.ACR_NAME }},__SQL_INSTANCE_NAME__=${{ env.SQL_INSTANCE_NAME }},__DB_ADMIN_LOGIN__=${{ env.DB_ADMIN_LOGIN }},__DB_ADMIN_PASSWORD__=${{ env.DB_ADMIN_PASSWORD }},__STORAGE_NAME__=${{ env.STORAGE_NAME }}'
+        terraform_version: 1.6.6    
 
     - name: Terraform fmt
       id: fmt
