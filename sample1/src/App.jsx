@@ -2,6 +2,7 @@ import MainContent from './components/MainContent';
 import logo from './assets/images/logo.png';
 
 function App() {
+  const unusedVar = 'This is not used anywhere';
   return (
     <>
       <header>
