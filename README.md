@@ -1,6 +1,5 @@
 # Table of Contents
 [Slide Deck](https://github.com/user-attachments/files/16326660/AKS-GithubActions.pdf)
-
 1. [Introduction](#introduction)
 2. [GitHub Actions - Demo 1](#github-actions---demo-1)
     - [Usage](#usage)
